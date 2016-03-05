@@ -8,24 +8,55 @@
         var destinations = [];
         var map;
 
+
         function getDestinations() {
             destinations.push({
                 latLng: { lat: 51.0460156275713, lng: -114.05788480146 },
-                title: "Start"
+                ID: "kml_276",
+                RESOURCE_NM: "Historic City Hall"
 
             }, {
                 latLng: { lat: 51.0465212116674, lng: -114.059915310586 },
-                title: "Site 1"
-
+                ID: "kml_262",
+                RESOURCE_NM: "Olympic Plaza"
             });
         }
 
         getDestinations();
         
-        function getDirections(pointA, pointB) {
+        function getDirections(array) {
+            var directionsService = new google.maps.DirectionsService;
+            var directionsDisplay = new google.maps.DirectionsRenderer;
+            directionsDisplay.setMap(map);
             
+            //try and use if click new points?
+            var onChangeHandler = function() {
+                calculateAndDisplayRoute(directionsService, directionsDisplay);
+            };
+            
+            
+            
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
         }
-
+        
+        function calculateAndDisplayRoute(directionsService, directionsDisplay, array) {
+             var waypts = [];
+             
+            
+            directionsService.route({
+                origin: destinations[0].latLng,
+                destination: destinations[1].latLng,
+                travelMode: google.maps.TravelMode.WALKING
+            }, function (response, status) {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        }
+      
+        
         function initialize() {
 
             
@@ -50,6 +81,8 @@
                     title: item.title
                 });
             }
+            
+            getDirections(destinations);
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
