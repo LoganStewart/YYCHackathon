@@ -10,6 +10,11 @@
         var map;
         var currentLocation = 0;
 
+        var icons = {
+            future: "/images/future_small.png",
+            present: "/images/present_small.png",
+            past: "/images/past_small.png"
+        }
 
         function getDestinations() {
 
@@ -96,11 +101,20 @@
             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
             for (var i = 0; i < destinations.length; i++) {
                 var item = destinations[i];
+                
+                var icon = icons.future;
+                if(i === currentLocation ){
+                    icon = icons.present;
+                }
+                else{
+                    icon - icons.past;
+                }
                 new google.maps.Marker({
                     position: item.latLng,
                     map: map,
                     label: i.toString(),
-                    title: item.title
+                    title: item.title,
+                    icon: icon
                 });
             }
             
@@ -123,16 +137,18 @@
 
         function updateDestinationPanel() {
             
-            $("#destinationTitle").text(destinations[currentLocation].title);
-            $("#destinationSummary").text(destinations[currentLocation].summary);
+            $("#destinationTitle").text(destinations[currentLocation].RESOURCE_NM);
+            $("#destinationSummary").text(destinations[currentLocation].RESOURCE_NM);
         }
         
         function nextDestination(){
             currentLocation++;
+            updateDestinationPanel();
         }
         
         function previousDestination(){
             currentLocation--;
+            updateDestinationPanel();
         }
     </script>
 </head>
@@ -140,20 +156,22 @@
 <body>
     <table style="width:100%; height: 100%;text-align: center">
         <tr>
-            <td width="30%">
-                <h2 onclick="showMap()">Map</h2>
+            <td width="30%" onclick="showMap()">
+                <img src="/images/map.png" style="height:80px;" /> 
             </td>
             <td>
-                <table>
+                <table style="width:100%;">
                     <tr>
-                        <td colspan="2" style="text-align: center;"></td>
+                        <td colspan="2" style="text-align: center;">
+                            Path Options
+                        </td>
                     </tr>
                     <tr>
-                        <td>
-                            <h3>Show Full Path</h3>
+                        <td style="text-align: center;">
+                            <h4>Show Full Path</h4>
                         </td>
-                        <td>
-                            <h3>This Leg Path</h3>
+                        <td style="text-align: center;">
+                            <h4>This Current Path</h4>
                         </td>
                     </tr>
 
