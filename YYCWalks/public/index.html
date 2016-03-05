@@ -15,8 +15,11 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
+        var geoJsonObj;
         $.ajax('test.kml').done(function(xml) {
-            console.log(toGeoJSON.kml(xml));
+            geoJsonObj = toGeoJSON.kml(xml);// console.log(toGeoJSON.kml(xml));
+            getDestinations();
+            initialize();
         });
 
         var destinations = [];
@@ -24,6 +27,10 @@
         var streetMap;
         var streetTilt;
         var currentLocation = 0;
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer ({
+                                                                            suppressMarkers: true
+                                                                        });
 
         var icons = {
             future: "/images/future_small.png",
@@ -32,55 +39,30 @@
         }
 
         function getDestinations() {
+            //debugger;
+            if (geoJsonObj) {
 
+
+                for (var i = 0; i < geoJsonObj.features.length; i++) {
+                    var geoItemValue = geoJsonObj.features[i];
             destinations.push(
             {
-                latLng: { lat: 51.0460156275713, lng: -114.05788480146 },
-                ID: "kml_276",
-                RESOURCE_NM: "Historic City Hall",
+                        latLng: {
+                            lat: geoItemValue.geometry.coordinates[1], // 51.0460156275713,
+                            lng: geoItemValue.geometry.coordinates[0] //- 114.05788480146
+            }, 
+                        ID: geoItemValue.properties.name, //"kml_276",
+                        geoItem: geoItemValue,
                 marker: null
 
-            }, 
-            {
-                latLng: { lat: 51.0455382275903, lng: -114.059053370122 },
-                ID: "kml_262",
-                RESOURCE_NM: "Olympic Plaza",
-                marker: null
-            }, 
-            {
-                latLng: { lat: 51.0444776908985, lng: -114.063112585113 },
-                ID: "kml_266",
-                RESOURCE_NM: "Calgary Tower",
-                marker: null
-            },
-            {
-                latLng: { lat: 51.0456504311938, lng: -114.062840868345 },
-                ID: "kml_279",
-                RESOURCE_NM: "Imperial Bank Building",
-                marker: null
-            },
-            {
-                latLng: { lat: 51.0465212116674, lng: -114.059915310586 },
-                ID: "kml_793",
-                RESOURCE_NM: "Cathedral Church of the Redeemer",
-                marker: null
             });
         }
+            }
+        }
 
-        getDestinations();
+        //getDestinations();
         
         function getDirections(destArray) {
-            var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer ({
-                                                                            suppressMarkers: true
-                                                                        });
-            directionsDisplay.setMap(map);
-            
-            
-            calculateAndDisplayRoute(directionsService, directionsDisplay, destArray);
-        }
-        
-        function calculateAndDisplayRoute(directionsService, directionsDisplay, destArray) {
             var waypts = [];
             
             if(destArray.length > 2) {
@@ -91,7 +73,6 @@
                     });
                 }
             }
-            debugger;
             
             directionsService.route({
                 origin: destArray[0].latLng,
@@ -118,6 +99,7 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            directionsDisplay.setMap(map);
 
         }
 
@@ -165,7 +147,7 @@
             updateMarkers();
             getDirections(destinations);
         }
-        google.maps.event.addDomListener(window, 'load', initialize);
+        //google.maps.event.addDomListener(window, 'load', initialize);
 
         function showMap() {
             $("#destination").hide();
@@ -178,18 +160,23 @@
             
             $("#destination").show();
             $("#googleMap").hide();
+            initializeStreetMap();
         }
 
         function updateDestinationPanel() {
-            initializeStreetMap();
-            $("#destinationTitle").text(destinations[currentLocation].RESOURCE_NM);
-            $("#destinationSummary").text(destinations[currentLocation].RESOURCE_NM);
+            //initializeStreetMap();
+           
+            
+            $("#destinationTitle").text(destinations[currentLocation].geoItem.properties.RESOURCE_NM);
+            $("#destinationSummary").text(destinations[currentLocation].geoItem.properties.SIGNIFICANCE_STMT_DSCRN);
+            $("#destinationHeritagVal").text(destinations[currentLocation].geoItem.properties.SIGNIFICANCE_STMT_HRTG_VAL);
+             
         }
         
         function nextDestination(){
             if(currentLocation < destinations.length - 1){
                 currentLocation++;
-                getDirections(_.slice(destinations,currentLocation, currentLocation+2));
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
             }
 
             updateMarkers();
@@ -199,7 +186,7 @@
         function previousDestination(){
             if(currentLocation > 0){
                 currentLocation--;
-                getDirections(_.slice(destinations,currentLocation, currentLocation+2));
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
             }
             
             updateMarkers();
@@ -217,6 +204,7 @@
                     destinations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
                 } else if (i < currentLocation) {
                     icon = icons.past;
+                    destinations[i].marker.setAnimation(null);
                 }
                 
                 destinations[i].marker.setIcon(icon);
@@ -311,6 +299,53 @@
             </div>
         </div>
     </div>
+
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div id="googleMap" style="width: 100%; height: 600px;"></div>
+                <div id="destination" style="width: 100%; height: 600px; overflow: scroll; text-align: left; padding-left: 20px;">
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div id="destinationTitle"></div>
+                            </td>
+                            <td style="max-width: 310px;">
+                                <div id="googleStreet" style="width: 300px; height: 300px;"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="destinationSummary"></div>
+                                <div id="destinationHeritagVal"></div>
+                            </td>
+                            <td style="text-align: right">
+                                <div id="googleTilt" style="width: 300px; height: 300px;"></div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <table style="width: 100%; text-align: center">
+                    <tr>
+                        <td width="30%" style="text-align: center" onclick="previousDestination()">
+                            <h2>Prev Destination</h2>
+                        </td>
+                        <td width="40%" onclick="showDestination()">
+                            <h2>Arrived at Destination</h2>
+                        </td>
+                        <td width="30%" onclick="nextDestination()">
+                            <h2>Next Destination</h2>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
     <script>
         $(function () {
         $("#googleMap").show();
