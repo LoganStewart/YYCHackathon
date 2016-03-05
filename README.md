@@ -1,5 +1,10 @@
 # YYCHackathon
 ## Team Memebers
 * Tim Martin
-* Logan Steward
+* Logan Stewart
 * Sherry Yang
+
+
+
+
+ SET DEBUG=YYCWalks:* & npm start
