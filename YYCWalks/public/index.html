@@ -102,6 +102,7 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            directionsDisplay.setMap(map);
 
         }
 
@@ -173,7 +174,7 @@
         function nextDestination(){
             if(currentLocation < destinations.length - 1){
                 currentLocation++;
-                getDirections(_.slice(destinations,currentLocation, currentLocation+2));
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
             }
 
             updateMarkers();
@@ -183,7 +184,7 @@
         function previousDestination(){
             if(currentLocation > 0){
                 currentLocation--;
-                getDirections(_.slice(destinations,currentLocation, currentLocation+2));
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
             }
             
             updateMarkers();
