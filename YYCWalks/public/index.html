@@ -5,7 +5,12 @@
     <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="javascripts/lodash/lodash.js"></script>
+    <script src='javascripts/togeojson.js'></script>
     <script>
+        $.ajax('test.kml').done(function(xml) {
+            console.log(toGeoJSON.kml(xml));
+        });
+
         var destinations = [];
         var map;
         var currentLocation = 0;
@@ -153,6 +158,7 @@
             updateDestinationPanel();
         }
     </script>
+    <title>YYC Walks</title>
 </head>
 
 <body>

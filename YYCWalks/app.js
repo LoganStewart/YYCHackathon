@@ -10,9 +10,25 @@ var users = require('./routes/users');
 
 var app = express();
 
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+var tj = require('togeojson'),
+    fs = require('fs'),
+    // node doesn't have xml parsing or a dom. use jsdom
+    jsdom = require('jsdom').jsdom;
+
+var kml = jsdom(fs.readFileSync('include/test.kml', 'utf8'));
+
+var converted = tj.kml(kml);
+
+var converted_with_styles = tj.kml(kml, { styles: true });
+
+console.log(converted_with_styles);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -56,5 +72,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
+app.listen(3000);
 
 module.exports = app;
