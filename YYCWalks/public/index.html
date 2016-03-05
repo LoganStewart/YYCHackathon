@@ -66,8 +66,8 @@
             var directionsDisplay = new google.maps.DirectionsRenderer ({
                                                                             suppressMarkers: true
                                                                         });
+            directionsDisplay.setMap(null);                                                                
             directionsDisplay.setMap(map);
-            
             
             calculateAndDisplayRoute(directionsService, directionsDisplay, destArray);
         }
@@ -209,6 +209,7 @@
                     destinations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
                 } else if (i < currentLocation) {
                     icon = icons.past;
+                    destinations[i].marker.setAnimation(null);
                 }
                 
                 destinations[i].marker.setIcon(icon);
@@ -275,8 +276,6 @@
                             <td style="text-align: right"><div id="googleTilt" style="width: 300px; height: 300px;"></div></td>
                         </tr>
                     </table>
-                    
-                    
                     
                 </div>
             </td>
