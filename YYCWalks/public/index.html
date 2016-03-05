@@ -68,6 +68,7 @@
                                                                         });
             directionsDisplay.setMap(map);
             
+            
             calculateAndDisplayRoute(directionsService, directionsDisplay, destArray);
         }
         
@@ -82,7 +83,7 @@
                     });
                 }
             }
-            
+            debugger;
             
             directionsService.route({
                 origin: destArray[0].latLng,
@@ -180,7 +181,7 @@
         function nextDestination(){
             if(currentLocation < destinations.length - 1){
                 currentLocation++;
-                getDirections(_.split(destinations,currentLocation, currentLocation+1));
+                getDirections(_.slice(destinations,currentLocation, currentLocation+2));
             }
 
             updateMarkers();
@@ -190,7 +191,7 @@
         function previousDestination(){
             if(currentLocation > 0){
                 currentLocation--;
-                getDirections(_.split(destinations,currentLocation, currentLocation+1));
+                getDirections(_.slice(destinations,currentLocation, currentLocation+2));
             }
             
             updateMarkers();
