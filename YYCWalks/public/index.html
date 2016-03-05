@@ -11,6 +11,7 @@
         
         var destinations = [];
         var map;
+        var currentLocation = 0;
 
         function getDestinations() {
             destinations.push({
@@ -62,6 +63,14 @@
         }
 
         
+        function nextDestination(){
+            currentLocation++;
+        }
+        
+        function previousDestination(){
+            currentLocation--;
+        }
+        
     </script>
 </head>
 
@@ -87,13 +96,13 @@
                 <table style="width: 100%; text-align: center">
                     <tr>
                         <td width="30%" style="text-align: center">
-                            <h2>Prev Destination</h2>
+                            <h2 onclick="previousDestination()">Prev Destination</h2>
                         </td>
                         <td  width="40%">
-                            <h2>Arrived at Destination</h2>
+                            <h2  onclick="showDestination()">Arrived at Destination</h2>
                         </td>
                         <td  width="30%">
-                            <h2>Next Destination</h2>
+                            <h2 onclick="nextDestination()">Next Destination</h2>
                         </td>
                     </tr>
                 </table>
