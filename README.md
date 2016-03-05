@@ -4,7 +4,5 @@
 * Logan Stewart
 * Sherry Yang
 
-
-
-
- SET DEBUG=YYCWalks:* & npm start
+## Start
+node app.js

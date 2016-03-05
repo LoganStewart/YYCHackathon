@@ -19,6 +19,10 @@
         var streetMap;
         var streetTilt;
         var currentLocation = 0;
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer ({
+                                                                            suppressMarkers: true
+                                                                        });
 
         var icons = {
             future: "/images/future_small.png",
@@ -33,35 +37,24 @@
 
                 for (var i = 0; i < geoJsonObj.features.length; i++) {
                     var geoItemValue = geoJsonObj.features[i];
-                    destinations.push(
-                    {
+            destinations.push(
+            {
                         latLng: {
                             lat: geoItemValue.geometry.coordinates[1], // 51.0460156275713,
                             lng: geoItemValue.geometry.coordinates[0] //- 114.05788480146
-                        },
+            }, 
                         ID: geoItemValue.properties.name, //"kml_276",
                         geoItem: geoItemValue,
-                        marker: null
+                marker: null
 
-                    });
-                }
+            });
+        }
             }
         }
 
         //getDestinations();
         
         function getDirections(destArray) {
-            var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer ({
-                                                                            suppressMarkers: true
-                                                                        });
-            directionsDisplay.setMap(map);
-            
-            
-            calculateAndDisplayRoute(directionsService, directionsDisplay, destArray);
-        }
-        
-        function calculateAndDisplayRoute(directionsService, directionsDisplay, destArray) {
             var waypts = [];
             
             if(destArray.length > 2) {
@@ -98,6 +91,7 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            directionsDisplay.setMap(map);
 
         }
 
@@ -170,7 +164,7 @@
         function nextDestination(){
             if(currentLocation < destinations.length - 1){
                 currentLocation++;
-                getDirections(_.slice(destinations,currentLocation, currentLocation+2));
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
             }
 
             updateMarkers();
@@ -180,7 +174,7 @@
         function previousDestination(){
             if(currentLocation > 0){
                 currentLocation--;
-                getDirections(_.slice(destinations,currentLocation, currentLocation+2));
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
             }
             
             updateMarkers();
@@ -198,6 +192,7 @@
                     destinations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
                 } else if (i < currentLocation) {
                     icon = icons.past;
+                    destinations[i].marker.setAnimation(null);
                 }
                 
                 destinations[i].marker.setIcon(icon);
@@ -269,9 +264,7 @@
                             </td>
                         </tr>
                     </table>
-
-
-
+                    
                 </div>
             </td>
         </tr>
