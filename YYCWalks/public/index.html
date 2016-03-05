@@ -13,11 +13,13 @@
 
         var destinations = [];
         var map;
+        var streetMap;
+        var streetTilt;
         var currentLocation = 0;
 
         var icons = {
             future: "/images/future_small.png",
-            present: "/images/present_small.png",
+            present: "/images/present_small2.png",
             past: "/images/past_small.png"
         }
 
@@ -27,46 +29,46 @@
             {
                 latLng: { lat: 51.0460156275713, lng: -114.05788480146 },
                 ID: "kml_276",
-                RESOURCE_NM: "Historic City Hall"
+                RESOURCE_NM: "Historic City Hall",
+                marker: null
 
             }, 
             {
                 latLng: { lat: 51.0455382275903, lng: -114.059053370122 },
                 ID: "kml_262",
-                RESOURCE_NM: "Olympic Plaza"
+                RESOURCE_NM: "Olympic Plaza",
+                marker: null
             }, 
             {
                 latLng: { lat: 51.0444776908985, lng: -114.063112585113 },
                 ID: "kml_266",
-                RESOURCE_NM: "Calgary Tower"
+                RESOURCE_NM: "Calgary Tower",
+                marker: null
             },
             {
                 latLng: { lat: 51.0456504311938, lng: -114.062840868345 },
                 ID: "kml_279",
-                RESOURCE_NM: "Imperial Bank Building"
+                RESOURCE_NM: "Imperial Bank Building",
+                marker: null
             },
             {
                 latLng: { lat: 51.0465212116674, lng: -114.059915310586 },
                 ID: "kml_793",
-                RESOURCE_NM: "Cathedral Church of the Redeemer"
+                RESOURCE_NM: "Cathedral Church of the Redeemer",
+                marker: null
             });
         }
 
         getDestinations();
         
-        function getDirections(array) {
+        function getDirections(destArray) {
             var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer;
+            var directionsDisplay = new google.maps.DirectionsRenderer ({
+                                                                            suppressMarkers: true
+                                                                        });
             directionsDisplay.setMap(map);
             
-            //try and use if click new points?
-            var onChangeHandler = function() {
-                calculateAndDisplayRoute(directionsService, directionsDisplay);
-            };
-            
-            
-            
-            calculateAndDisplayRoute(directionsService, directionsDisplay);
+            calculateAndDisplayRoute(directionsService, directionsDisplay, destArray);
         }
         
         function calculateAndDisplayRoute(directionsService, directionsDisplay, destArray) {
@@ -77,16 +79,17 @@
                     waypts.push({
                         location: destArray[i].latLng,
                         stopover: true
-                    })
+                    });
                 }
             }
             
             
             directionsService.route({
                 origin: destArray[0].latLng,
-                destination: destArray[-1].latLng,
+                destination: destArray[destArray.length - 1].latLng,
                 travelMode: google.maps.TravelMode.WALKING,
-                waypoints: waypts
+                waypoints: waypts,
+                optimizeWaypoints: true
             }, function (response, status) {
                 if (status === google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(response);
@@ -97,7 +100,7 @@
         }
       
         
-        function initialize() {
+        function initializeMainMap() {
             var myLatLng = { lat: 51.0460156275713, lng: -114.05788480146 };
 
             var mapProp = {
@@ -106,17 +109,43 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+        }
+
+        function initializeStreetMap() {
+            var currentLoc = destinations[currentLocation];
+            var myLatLng = { lat: currentLoc.latLng.lat, lng: currentLoc.latLng.lng };
+
+             streetMap = new google.maps.StreetViewPanorama(
+            document.getElementById('googleStreet'),
+            {
+              position: {lat: myLatLng.lat, lng: myLatLng.lng},
+              pov: {heading: 160, pitch: 0},
+              zoom: 1
+            });
+            
+            streetTilt = new google.maps.Map(document.getElementById('googleTilt'), {
+                center: {lat: myLatLng.lat, lng: myLatLng.lng},
+                zoom: 18,
+                mapTypeId: google.maps.MapTypeId.SATELLITE
+            });
+            map.setTilt(45);
+
+        }
+
+        function initialize() {
+            initializeMainMap();
+            initializeStreetMap();
             for (var i = 0; i < destinations.length; i++) {
                 var item = destinations[i];
                 
                 var icon = icons.future;
-                if(i === currentLocation ){
+                if (i === currentLocation) {
                     icon = icons.present;
+                } else if (i < currentLocation) {
+                    icon = icons.past;
                 }
-                else{
-                    icon - icons.past;
-                }
-                new google.maps.Marker({
+                destinations[i].marker = new google.maps.Marker({
                     position: item.latLng,
                     map: map,
                     label: i.toString(),
@@ -124,7 +153,7 @@
                     icon: icon
                 });
             }
-            
+            updateMarkers();
             getDirections(destinations);
         }
         google.maps.event.addDomListener(window, 'load', initialize);
@@ -143,19 +172,56 @@
         }
 
         function updateDestinationPanel() {
-            
+            initializeStreetMap();
             $("#destinationTitle").text(destinations[currentLocation].RESOURCE_NM);
             $("#destinationSummary").text(destinations[currentLocation].RESOURCE_NM);
         }
         
         function nextDestination(){
-            currentLocation++;
+            if(currentLocation < destinations.length - 1){
+                currentLocation++;
+                getDirections(_.split(destinations,currentLocation, currentLocation+1));
+            }
+
+            updateMarkers();
             updateDestinationPanel();
         }
         
         function previousDestination(){
-            currentLocation--;
+            if(currentLocation > 0){
+                currentLocation--;
+                getDirections(_.split(destinations,currentLocation, currentLocation+1));
+            }
+            
+            updateMarkers();
             updateDestinationPanel();
+        }
+        
+        function updateMarkers()
+        {
+            for (var i = 0; i < destinations.length; i++) {
+                
+                var icon = icons.future;
+                destinations[i].marker.setAnimation(null);
+                if (i === currentLocation) {
+                    icon = icons.present;
+                    destinations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
+                } else if (i < currentLocation) {
+                    icon = icons.past;
+                }
+                
+                destinations[i].marker.setIcon(icon);
+            }
+        }
+
+        function showFullPath()
+        {
+            getDirections(destinations);
+        }
+        
+         function showCurrentPath()
+        {
+            
         }
     </script>
     <title>YYC Walks</title>
@@ -165,7 +231,7 @@
     <table style="width:100%; height: 100%;text-align: center">
         <tr>
             <td width="30%" onclick="showMap()">
-                <img src="/images/map.png" style="height:80px;" /> 
+                <img src="/images/map.png" style="height:80px;" />
             </td>
             <td>
                 <table style="width:100%;">
@@ -175,18 +241,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: center;">
+                        <td style="text-align: center;" onclick="showFullPath()">
                             <h4>Show Full Path</h4>
                         </td>
-                        <td style="text-align: center;">
+                        <td style="text-align: center;" onclick="showCurrentPath()">
                             <h4>This Current Path</h4>
                         </td>
                     </tr>
 
                 </table>
             </td>
-            <td width="30%">
-                <h2 onclick="showDestination()">Destination</h2>
+            <td width="30%" onclick="showDestination()">
+                <h2>Destination</h2>
             </td>
 
         </tr>
@@ -194,8 +260,23 @@
             <td colspan="3">
                 <div id="googleMap" style="width: 100%; height: 600px;"></div>
                 <div id="destination" style="width: 100%; height: 600px; overflow: scroll; text-align: left; padding-left: 20px;">
-                    <div id="destinationTitle"></div>
-                    <div id="destinationSummary"></div>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div id="destinationTitle"></div>
+                            </td>
+                            <td style="max-width: 310px;">
+                                <div id="googleStreet" style="width: 300px; height: 300px;"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div id="destinationSummary"></div></td>
+                            <td style="text-align: right"><div id="googleTilt" style="width: 300px; height: 300px;"></div></td>
+                        </tr>
+                    </table>
+                    
+                    
+                    
                 </div>
             </td>
         </tr>
@@ -203,14 +284,14 @@
             <td colspan="3">
                 <table style="width: 100%; text-align: center">
                     <tr>
-                        <td width="30%" style="text-align: center">
-                            <h2 onclick="previousDestination()">Prev Destination</h2>
+                        <td width="30%" style="text-align: center" onclick="previousDestination()">
+                            <h2>Prev Destination</h2>
                         </td>
-                        <td width="40%">
-                            <h2 onclick="showDestination()">Arrived at Destination</h2>
+                        <td width="40%" onclick="showDestination()">
+                            <h2>Arrived at Destination</h2>
                         </td>
-                        <td width="30%">
-                            <h2 onclick="nextDestination()">Next Destination</h2>
+                        <td width="30%" onclick="nextDestination()">
+                            <h2>Next Destination</h2>
                         </td>
                     </tr>
                 </table>
