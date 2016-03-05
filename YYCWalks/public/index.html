@@ -2,10 +2,18 @@
 <html>
 
 <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="javascripts/lodash/lodash.js"></script>
     <script src='javascripts/togeojson.js'></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
         var geoJsonObj;
         $.ajax('test.kml').done(function(xml) {
@@ -217,32 +225,80 @@
 </head>
 
 <body>
-    <table style="width:100%; height: 100%;text-align: center">
-        <tr>
-            <td width="30%" onclick="showMap()">
-                <img src="/images/map.png" style="height:80px;" />
-            </td>
-            <td>
-                <table style="width:100%;">
-                    <tr>
-                        <td colspan="2" style="text-align: center;">
-                            Path Options
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;" onclick="showFullPath()">
-                            <h4>Show Full Path</h4>
-                        </td>
-                        <td style="text-align: center;" onclick="showCurrentPath()">
-                            <h4>This Current Path</h4>
-                        </td>
-                    </tr>
+    <div class="container">
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">YYC Walks</a>
+            </div>
 
-                </table>
-            </td>
-            <td width="30%" onclick="showDestination()">
-                <h2>Destination</h2>
-            </td>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li onclick="showMap()"><a href="#"><span class="glyphicon glyphicon-globe"></span> Walk Map</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Path Options<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li onclick="showFullPath()"><a href="#">Show Full Path</a></li>
+                    <li onclick="showCurrentPath()"><a href="#">This Current Path</a></li>
+                  </ul>
+                </li>
+                <li onclick="showDestination()"><a href="#"><span class="glyphicon glyphicon-info-sign"></span> Destination</a></li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+        <table style="width:100%; height: 100%;text-align: center">
+            <tr>
+                <td colspan="3">
+                    <div id="googleMap" style="width: 100%; height: 600px;"></div>
+                    <div id="destination" style="width: 100%; height: 600px; overflow: scroll; text-align: left; padding-left: 20px;">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div id="destinationTitle"></div>
+                                </td>
+                                <td style="max-width: 310px;">
+                                    <div id="googleStreet" style="width: 300px; height: 300px;"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><div id="destinationSummary"></div></td>
+                                <td style="text-align: right"><div id="googleTilt" style="width: 300px; height: 300px;"></div></td>
+                            </tr>
+                        </table>
+                        
+                        
+                        
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group" onclick="previousDestination()">
+                <button type="button" class="btn btn-default btn-block">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> PREV
+                </button>
+            </div>
+            <div class="btn-group" role="group" onclick="showDestination()">
+                <button type="button" class="btn btn-default btn-block">
+                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ARRIVED
+                </button>
+            </div>
+            <div class="btn-group" role="group" onclick="nextDestination()">
+                <button type="button" class="btn btn-default btn-block">
+                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> NEXT
+                </button>
+            </div>
+        </div>
+    </div>
 
         </tr>
         <tr>
