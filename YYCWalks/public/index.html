@@ -4,11 +4,8 @@
 <head>
     <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="javascripts/lodash/lodash.js"></script>
     <script>
-        
-        
-   
-        
         var destinations = [];
         var map;
         var currentLocation = 0;
@@ -83,23 +80,38 @@
         function previousDestination(){
             currentLocation--;
         }
-        
     </script>
 </head>
 
 <body>
     <table style="width:100%; height: 100%;text-align: center">
         <tr>
-            <td width="50%">
+            <td width="30%">
                 <h2 onclick="showMap()">Map</h2>
             </td>
             <td>
+                <table>
+                    <tr>
+                        <td colspan="2" style="text-align: center;"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3>Show Full Path</h3>
+                        </td>
+                        <td>
+                            <h3>This Leg Path</h3>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+            <td width="30%">
                 <h2 onclick="showDestination()">Destination</h2>
             </td>
 
         </tr>
         <tr>
-            <td colspan="2">
+            <td colspan="3">
                 <div id="googleMap" style="width: 100%; height: 600px;"></div>
                 <div id="destination" style="width: 100%; height: 600px; overflow: scroll; text-align: left; padding-left: 20px;">
                     <div id="destinationTitle"></div>
@@ -108,16 +120,16 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td colspan="3">
                 <table style="width: 100%; text-align: center">
                     <tr>
                         <td width="30%" style="text-align: center">
                             <h2 onclick="previousDestination()">Prev Destination</h2>
                         </td>
-                        <td  width="40%">
-                            <h2  onclick="showDestination()">Arrived at Destination</h2>
+                        <td width="40%">
+                            <h2 onclick="showDestination()">Arrived at Destination</h2>
                         </td>
-                        <td  width="30%">
+                        <td width="30%">
                             <h2 onclick="nextDestination()">Next Destination</h2>
                         </td>
                     </tr>
@@ -125,13 +137,12 @@
             </td>
         </tr>
     </table>
-<script>
-    $(function () {
+    <script>
+        $(function () {
         $("#googleMap").show();
         $("#destination").hide();
     });
-  
-</script>
+    </script>
 </body>
 
 </html>
