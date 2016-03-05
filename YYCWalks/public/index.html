@@ -63,11 +63,6 @@
                                                                         });
             directionsDisplay.setMap(map);
             
-            //try and use if click new points?
-            var onChangeHandler = function() {
-                calculateAndDisplayRoute(directionsService, directionsDisplay, destArray);
-            };
-            
             calculateAndDisplayRoute(directionsService, directionsDisplay, destArray);
         }
         
@@ -178,18 +173,21 @@
         }
         
         function nextDestination(){
-            if(currentLocation < destinations.length - 1)
+            if(currentLocation < destinations.length - 1){
                 currentLocation++;
+                getDirections(_.split(destinations,currentLocation, currentLocation+1));
+            }
 
             updateMarkers();
             updateDestinationPanel();
         }
         
         function previousDestination(){
-            if(currentLocation > 0)
+            if(currentLocation > 0){
                 currentLocation--;
-
-                
+                getDirections(_.split(destinations,currentLocation, currentLocation+1));
+            }
+            
             updateMarkers();
             updateDestinationPanel();
         }
