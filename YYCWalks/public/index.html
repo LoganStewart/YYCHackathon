@@ -152,13 +152,17 @@
             
             $("#destination").show();
             $("#googleMap").hide();
+            initializeStreetMap();
         }
 
         function updateDestinationPanel() {
-            initializeStreetMap();
+            //initializeStreetMap();
+           
+            
             $("#destinationTitle").text(destinations[currentLocation].geoItem.properties.RESOURCE_NM);
             $("#destinationSummary").text(destinations[currentLocation].geoItem.properties.SIGNIFICANCE_STMT_DSCRN);
             $("#destinationHeritagVal").text(destinations[currentLocation].geoItem.properties.SIGNIFICANCE_STMT_HRTG_VAL);
+             
         }
         
         function nextDestination(){
