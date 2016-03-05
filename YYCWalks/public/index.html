@@ -18,17 +18,32 @@
 
         function getDestinations() {
 
-
-
-            destinations.push({
+            destinations.push(
+            {
                 latLng: { lat: 51.0460156275713, lng: -114.05788480146 },
                 ID: "kml_276",
                 RESOURCE_NM: "Historic City Hall"
 
-            }, {
-                latLng: { lat: 51.0465212116674, lng: -114.059915310586 },
+            }, 
+            {
+                latLng: { lat: 51.0455382275903, lng: -114.059053370122 },
                 ID: "kml_262",
                 RESOURCE_NM: "Olympic Plaza"
+            }, 
+            {
+                latLng: { lat: 51.0444776908985, lng: -114.063112585113 },
+                ID: "kml_266",
+                RESOURCE_NM: "Calgary Tower"
+            },
+            {
+                latLng: { lat: 51.0456504311938, lng: -114.062840868345 },
+                ID: "kml_279",
+                RESOURCE_NM: "Imperial Bank Building"
+            },
+            {
+                latLng: { lat: 51.0465212116674, lng: -114.059915310586 },
+                ID: "kml_793",
+                RESOURCE_NM: "Cathedral Church of the Redeemer"
             });
         }
 
@@ -49,14 +64,24 @@
             calculateAndDisplayRoute(directionsService, directionsDisplay);
         }
         
-        function calculateAndDisplayRoute(directionsService, directionsDisplay, array) {
-             var waypts = [];
-             
+        function calculateAndDisplayRoute(directionsService, directionsDisplay, destArray) {
+            var waypts = [];
+            
+            if(destArray.length > 2) {
+                for (var i = 1; i < destArray.length - 1; i++) {
+                    waypts.push({
+                        location: destArray[i].latLng,
+                        stopover: true
+                    })
+                }
+            }
+            
             
             directionsService.route({
-                origin: destinations[0].latLng,
-                destination: destinations[1].latLng,
-                travelMode: google.maps.TravelMode.WALKING
+                origin: destArray[0].latLng,
+                destination: destArray[-1].latLng,
+                travelMode: google.maps.TravelMode.WALKING,
+                waypoints: waypts
             }, function (response, status) {
                 if (status === google.maps.DirectionsStatus.OK) {
                     directionsDisplay.setDirections(response);
