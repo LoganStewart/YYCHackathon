@@ -7,8 +7,11 @@
     <script src="javascripts/lodash/lodash.js"></script>
     <script src='javascripts/togeojson.js'></script>
     <script>
+        var geoJsonObj;
         $.ajax('test.kml').done(function(xml) {
-            console.log(toGeoJSON.kml(xml));
+            geoJsonObj = toGeoJSON.kml(xml);// console.log(toGeoJSON.kml(xml));
+            getDestinations();
+            initialize();
         });
 
         var destinations = [];
@@ -24,42 +27,28 @@
         }
 
         function getDestinations() {
+            //debugger;
+            if (geoJsonObj) {
 
-            destinations.push(
-            {
-                latLng: { lat: 51.0460156275713, lng: -114.05788480146 },
-                ID: "kml_276",
-                RESOURCE_NM: "Historic City Hall",
-                marker: null
 
-            }, 
-            {
-                latLng: { lat: 51.0455382275903, lng: -114.059053370122 },
-                ID: "kml_262",
-                RESOURCE_NM: "Olympic Plaza",
-                marker: null
-            }, 
-            {
-                latLng: { lat: 51.0444776908985, lng: -114.063112585113 },
-                ID: "kml_266",
-                RESOURCE_NM: "Calgary Tower",
-                marker: null
-            },
-            {
-                latLng: { lat: 51.0456504311938, lng: -114.062840868345 },
-                ID: "kml_279",
-                RESOURCE_NM: "Imperial Bank Building",
-                marker: null
-            },
-            {
-                latLng: { lat: 51.0465212116674, lng: -114.059915310586 },
-                ID: "kml_793",
-                RESOURCE_NM: "Cathedral Church of the Redeemer",
-                marker: null
-            });
+                for (var i = 0; i < geoJsonObj.features.length; i++) {
+                    var geoItemValue = geoJsonObj.features[i];
+                    destinations.push(
+                    {
+                        latLng: {
+                            lat: geoItemValue.geometry.coordinates[1], // 51.0460156275713,
+                            lng: geoItemValue.geometry.coordinates[0] //- 114.05788480146
+                        },
+                        ID: geoItemValue.properties.name, //"kml_276",
+                        geoItem: geoItemValue,
+                        marker: null
+
+                    });
+                }
+            }
         }
 
-        getDestinations();
+        //getDestinations();
         
         function getDirections(destArray) {
             var directionsService = new google.maps.DirectionsService;
@@ -83,7 +72,6 @@
                     });
                 }
             }
-            debugger;
             
             directionsService.route({
                 origin: destArray[0].latLng,
@@ -157,7 +145,7 @@
             updateMarkers();
             getDirections(destinations);
         }
-        google.maps.event.addDomListener(window, 'load', initialize);
+        //google.maps.event.addDomListener(window, 'load', initialize);
 
         function showMap() {
             $("#destination").hide();
@@ -174,8 +162,9 @@
 
         function updateDestinationPanel() {
             initializeStreetMap();
-            $("#destinationTitle").text(destinations[currentLocation].RESOURCE_NM);
-            $("#destinationSummary").text(destinations[currentLocation].RESOURCE_NM);
+            $("#destinationTitle").text(destinations[currentLocation].geoItem.properties.RESOURCE_NM);
+            $("#destinationSummary").text(destinations[currentLocation].geoItem.properties.SIGNIFICANCE_STMT_DSCRN);
+            $("#destinationHeritagVal").text(destinations[currentLocation].geoItem.properties.SIGNIFICANCE_STMT_HRTG_VAL);
         }
         
         function nextDestination(){
@@ -271,13 +260,18 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><div id="destinationSummary"></div></td>
-                            <td style="text-align: right"><div id="googleTilt" style="width: 300px; height: 300px;"></div></td>
+                            <td>
+                                <div id="destinationSummary"></div>
+                                <div id="destinationHeritagVal"></div>
+                            </td>
+                            <td style="text-align: right">
+                                <div id="googleTilt" style="width: 300px; height: 300px;"></div>
+                            </td>
                         </tr>
                     </table>
-                    
-                    
-                    
+
+
+
                 </div>
             </td>
         </tr>
