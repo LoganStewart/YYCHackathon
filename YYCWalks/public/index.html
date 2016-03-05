@@ -16,6 +16,10 @@
         var streetMap;
         var streetTilt;
         var currentLocation = 0;
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer ({
+                                                                            suppressMarkers: true
+                                                                        });
 
         var icons = {
             future: "/images/future_small.png",
@@ -60,19 +64,8 @@
         }
 
         getDestinations();
-        
+                
         function getDirections(destArray) {
-            var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer ({
-                                                                            suppressMarkers: true
-                                                                        });
-            directionsDisplay.setMap(null);                                                                
-            directionsDisplay.setMap(map);
-            
-            calculateAndDisplayRoute(directionsService, directionsDisplay, destArray);
-        }
-        
-        function calculateAndDisplayRoute(directionsService, directionsDisplay, destArray) {
             var waypts = [];
             
             if(destArray.length > 2) {
@@ -83,7 +76,6 @@
                     });
                 }
             }
-            debugger;
             
             directionsService.route({
                 origin: destArray[0].latLng,
