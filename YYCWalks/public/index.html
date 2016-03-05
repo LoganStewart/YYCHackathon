@@ -14,13 +14,18 @@
         var currentLocation = 0;
 
         function getDestinations() {
+
+
+
             destinations.push({
                 latLng: { lat: 51.0460156275713, lng: -114.05788480146 },
-                title: "Start"
+                title: "Start",
+                summary:"This is my Desciption"
 
             }, {
                 latLng: { lat: 51.0465212116674, lng: -114.059915310586 },
-                title: "Site 1"
+                title: "Site 1",
+                summary: "This is my Desciption2"
 
             });
         }
@@ -57,11 +62,19 @@
             $("#googleMap").show();
         }
         
-        function showDestination(){
+        function showDestination() {
+            updateDestinationPanel();
+
+            
             $("#destination").show();
             $("#googleMap").hide();
         }
 
+        function updateDestinationPanel() {
+            
+            $("#destinationTitle").text(destinations[currentLocation].title);
+            $("#destinationSummary").text(destinations[currentLocation].summary);
+        }
         
         function nextDestination(){
             currentLocation++;
@@ -88,7 +101,10 @@
         <tr>
             <td colspan="2">
                 <div id="googleMap" style="width: 100%; height: 600px;"></div>
-                <div id="destination" style="width: 100%; height: 600px; overflow: scroll; text-align: left; padding-left: 20px;">Testination</div>
+                <div id="destination" style="width: 100%; height: 600px; overflow: scroll; text-align: left; padding-left: 20px;">
+                    <div id="destinationTitle"></div>
+                    <div id="destinationSummary"></div>
+                </div>
             </td>
         </tr>
         <tr>
