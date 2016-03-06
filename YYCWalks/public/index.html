@@ -26,6 +26,7 @@
 
         var destinations = [];
         var map;
+        var mapOverview;
         var streetMap;
         var streetTilt;
         var currentLocation = 0;
@@ -191,7 +192,7 @@
                 destinations[i].marker = marker;
             }
             updateMarkers();
-            getDirections(destinations);
+            getDirections(_.slice(destinations,currentLocation, currentLocation+2));
         }
 
         function showIndex() {
@@ -210,7 +211,7 @@
             $("#overviewLocations").html(overviewLocationsValues);
             $("#body-content").children().hide();
             $("#walk-overview").show();
-            initialize();
+            initializeOverview();
         }
 
         function showMap() {
