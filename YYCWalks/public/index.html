@@ -215,6 +215,7 @@
             if(currentLocation < destinations.length - 1){
                 currentLocation++;
                 getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
+                userNotifiedOfProximity=false;
             }
 
             updateMarkers();
@@ -225,6 +226,8 @@
             if(currentLocation > 0){
                 currentLocation--;
                 getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
+                userNotifiedOfProximity=false;
+                
             }
             
             updateMarkers();
@@ -260,7 +263,7 @@
         }
         
         var marker = null;
-
+        var userNotifiedOfProximity = false;
         function autoUpdate() {
             navigator.geolocation.getCurrentPosition(function(position) {  
                 var newPoint = new google.maps.LatLng(position.coords.latitude, 
@@ -278,6 +281,19 @@
                 });
                 }
 
+                var p2 = {
+                    lat: function(){return destinations[currentLocation].latLng.lat;},
+                    lng: function(){return destinations[currentLocation].latLng.lng;},
+                    }
+                if(getDistance(newPoint,p2) < 75 && !userNotifiedOfProximity)
+                {
+                    userNotifiedOfProximity = true;
+                    var result = window.confirm("You are close to your destination, would you like to see the details?"); 
+                    if(result){
+                        showDestination();
+                    }
+                }
+                
                 // Center the map on the new position
                 map.setCenter(newPoint);
             }); 
@@ -287,6 +303,23 @@
         }
 
         autoUpdate();
+
+        var rad = function (x) {
+            return x * Math.PI / 180;
+        };
+
+        var getDistance = function (p1, p2) {
+            var R = 6378137; // Earth’s mean radius in meter
+            var dLat = rad(p2.lat() - p1.lat());
+            var dLong = rad(p2.lng() - p1.lng());
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(rad(p1.lat())) * Math.cos(rad(p2.lat())) *
+                Math.sin(dLong / 2) * Math.sin(dLong / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+            return d; // returns the distance in meter
+        };
+        
     </script>
 
     <title>YYC Walks</title>
