@@ -31,6 +31,12 @@
         var currentLocation = 0;
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer ({suppressMarkers: true});
+        
+        var lineSymbol = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillOpacity: 1,
+            scale: 3
+        };
 
         var icons = {
             future: "/images/future_small.png",
@@ -196,6 +202,7 @@
             // $("#destination").hide();
             // $("#map").show();
             initialize();
+            autoUpdate();
         }
         
         function showDestination() {
@@ -286,7 +293,7 @@
                     icon: "/images/person-icon-red60.png"
                 });
                 }
-
+                debugger;
                 // Center the map on the new position
                 map.setCenter(newPoint);
             }); 
@@ -295,7 +302,6 @@
             setTimeout(autoUpdate, 5000);
         }
 
-        autoUpdate();
     </script>
 
     <title>YYC Walks</title>
@@ -384,7 +390,7 @@
                     <p id="overviewDistance"></p>
                     <h4>What you will see</h4>
                     <p id="overviewLocations"></p>
-                    <button type="button" class="btn btn-default btn-block">
+                    <button type="button" class="btn btn-default btn-block" onclick="showMap()">
                             <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> START
                     </button>
                 </div>
