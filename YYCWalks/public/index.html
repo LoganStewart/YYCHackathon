@@ -201,7 +201,7 @@
                 destinations[i].marker.setAnimation(null);
                 if (i === currentLocation) {
                     icon = icons.present;
-                    destinations[i].marker.setAnimation(google.maps.Animation.BOUNCE);
+                    destinations[i].marker.setAnimation(google.maps.Animation.DROP);
                 } else if (i < currentLocation) {
                     icon = icons.past;
                     destinations[i].marker.setAnimation(null);
