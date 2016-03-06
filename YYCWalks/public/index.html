@@ -108,12 +108,11 @@
                                         lat: legs[i].end_location.lat(), // 51.0460156275713,
                                         lng: legs[i].end_location.lng() //- 114.05788480146
                                     },
-                                    distance: legs[i].distance.value;
+                                    distance: legs[i].distance.value
                                 }
                                 
                             );
                         }
-                        debugger;
                         totalDistance = getTotalDistance(streetDestArray);
                         $("#overviewDistance").text(totalDistance);
                     }
