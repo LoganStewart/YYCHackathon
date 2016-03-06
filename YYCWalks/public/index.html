@@ -277,6 +277,11 @@
             initializeStreetMap();
         }
 
+        function showAbout() {
+            $("#body-content").children().hide();
+            $("#about").show();
+        }
+
         function updateDestinationPanel() {
             initializeStreetMap();
            
@@ -440,6 +445,16 @@
                         </li>
                         <li onclick="showDestination()"><a href="#"><span class="glyphicon glyphicon-info-sign"></span> Destination</a></li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li onclick="showAbout()"><a href="#">Tim Martin</a></li>
+                                <li onclick="showAbout()"><a href="#">Logan Stewart</a></li>
+                                <li onclick="showAbout()"><a href="#">Sherry Yang</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
                 <!-- /.navbar-collapse -->
             </div>
@@ -467,9 +482,9 @@
                     <a href="#" class="list-group-item">...</a>
                     <a href="#" class="list-group-item">More walks coming soon..</a>
                 </div>
-                 <center>
+                <center>
                     Data Provided By:
-                <a href="http://calgaryregion.ca/crp/calgary-regional-partnership.html" target="_blank"> <img src="images/logo-interior.jpg"></img></a>
+                <a href="http://calgaryregion.ca/crp/calgary-regional-partnership.html" target="_blank"><img src="images/logo-interior.jpg"></img></a>
                 </center>
             </div>
             <div id="map">
@@ -549,8 +564,38 @@
                 </div>
             </div>
             <div id="about">
-                <!-- about stuff here -->
-                <img src="images/logo-interior.jpg"></img>
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Tim Martin</h3>
+                            </div>
+                            <div class="panel-body">
+                                Panel content
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Logan Stewart</h3>
+                            </div>
+                            <div class="panel-body">
+                                Panel content
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><a href="https://ca.linkedin.com/in/sherrylwyang" target="_blank"><span class="glyphicon glyphicon-user"></span></a> Sherry Yang</h3>
+                            </div>
+                            <div class="panel-body">
+                                <p>Code, fashion, and caffeine.</p><p>Front end development for web and mobile applications.  PHP savvy, with Java background.  Adapting to different frameworks of JavaScript by day.  Love a simple clean UI design.</p><p>Currently, exploring data analytics and data visualizations.  Working closely with microcomputers, sensors, and wearables.  Encouraged to communicate with all the things.</p><p>Customer service first.  Communication is always on.  Not shy to share an opinion, at all.</p><p>Enjoy beautiful things in life.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
