@@ -137,7 +137,11 @@
            var mapProp = {
                 center: new google.maps.LatLng(myLatLng.lat, myLatLng.lng),
                 zoom: 15,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                draggable: false,
+                zoomable: false,
+                disableDefaultUI: true,
+                scrollwheel: false
             };
             mapOverview = new google.maps.Map(document.getElementById("overviewMap"), mapProp);
             
