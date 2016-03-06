@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-/*
+
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
@@ -33,8 +33,8 @@ app.get('/users', user.list);
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
-*/
 
+/*
 var express = require('express');
 var path = require('path');
 //var favicon = require('serve-favicon');
@@ -84,6 +84,7 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+*/
 
 // error handlers
 
