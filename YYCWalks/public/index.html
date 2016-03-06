@@ -131,13 +131,17 @@
             return totalDistance;
         }
       
-        function initializeOverview(){
+        function initializeOverview() {
            var myLatLng = { lat: 51.0460156275713, lng: -114.05788480146 };
            var totalDistance = 0;
            var mapProp = {
                 center: new google.maps.LatLng(myLatLng.lat, myLatLng.lng),
                 zoom: 15,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                draggable: false,
+                zoomable: false,
+                disableDefaultUI: true,
+                scrollwheel: false
             };
             mapOverview = new google.maps.Map(document.getElementById("overviewMap"), mapProp);
             
@@ -307,6 +311,11 @@
             setDestinationTitle()
             updateMarkers();
             updateDestinationPanel();
+        }
+
+        function proceedNext() {
+            showMap();
+            nextDestination();
         }
         
         function setDestinationTitle(){
@@ -536,6 +545,11 @@
                                 <p id="destinationSummary"></p>
                                 <h3>Heritage Value</h3>
                                 <p id="destinationHeritagVal"></p>
+                            </div>
+                            <div class="panel-footer">
+                                <button type="button" class="btn btn-success btn-block" onclick="proceedNext()">
+                                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> PROCEED
+                                </button>
                             </div>
                         </div>
                     </div>
