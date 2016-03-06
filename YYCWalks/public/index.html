@@ -306,6 +306,11 @@
             updateMarkers();
             updateDestinationPanel();
         }
+
+        function proceedNext() {
+            showMap();
+            nextDestination();
+        }
         
         function updateMarkers()
         {
@@ -517,6 +522,11 @@
                                 <p id="destinationSummary"></p>
                                 <h3>Heritage Value</h3>
                                 <p id="destinationHeritagVal"></p>
+                            </div>
+                            <div class="panel-footer">
+                                <button type="button" class="btn btn-success btn-block" onclick="proceedNext()">
+                                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> PROCEED
+                                </button>
                             </div>
                         </div>
                     </div>
