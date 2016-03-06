@@ -442,16 +442,31 @@
                 </div>
             </div>
             <div id="walk-overview">
-                <div id="overviewMap" style="width: 100%; height: 600px;"></div>
-                <div id="overviewInfo" style="width: 100%; height: 600px;">
-                    <h3>City Centre Walk</h3>
-                    <h4>Total Distance</h4>
-                    <p id="overviewDistance"></p>
-                    <h4>What you will see</h4>
-                    <p id="overviewLocations"></p>
-                    <button type="button" class="btn btn-default btn-block" onclick="showCurrentPath()">
-                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> START
-                    </button>
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <div class="panel panel-default">
+                            <div class="panel-body" style="height: 600px; overflow-y:">
+                                <div id="overviewMap" style="width: 100%; height: 100%;"></div>
+                            </div>
+                         </div>
+                     </div>
+                     <div class="col-lg-4 col-md-4 col-sm-4">
+                         <div class="panel panel-default">
+                             <div id="overviewInfo" style="width: 100%; height: 600px;">
+                                <h3>City Centre Walk</h3>
+                                <p id="overviewDescription">
+                                    Take a stroll downtown and see amazing sights such as City Hall, Olympic Plaza and Calgary Tower. This walk begins at City Hall
+                                </p>
+                                <h4>Total Distance</h4>
+                                <p id="overviewDistance"></p>
+                                <h4>What you will see</h4>
+                                <p id="overviewLocations"></p>
+                                <button type="button" class="btn btn-default btn-block" onclick="showCurrentPath()">
+                                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> START
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="destination">
