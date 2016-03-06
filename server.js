@@ -55,7 +55,7 @@ var tj = require('togeojson'),
     // node doesn't have xml parsing or a dom. use jsdom
     jsdom = require('jsdom').jsdom;
 
-var kml = jsdom(fs.readFileSync('include/test.kml', 'utf8'));
+var kml = jsdom(fs.readFileSync('YYCWalks/include/test.kml', 'utf8'));
 
 var converted = tj.kml(kml);
 
