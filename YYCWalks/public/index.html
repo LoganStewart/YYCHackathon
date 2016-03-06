@@ -179,22 +179,24 @@
         function showOverview(){
             initializeOverview();
             
+            $("#body-content").children().hide();
+            $("#index").show();
         }
 
         function showMap() {
-           
-            $("#destination").hide();
+            $("#body-content").children().hide();
             $("#map").show();
+           
+            // $("#destination").hide();
+            // $("#map").show();
             initialize();
-
         }
         
         function showDestination() {
             updateDestinationPanel();
 
-            
+            $("#body-content").children().hide();
             $("#destination").show();
-            $("#map").hide();
             initializeStreetMap();
         }
 
@@ -357,10 +359,9 @@
         </div>
     </div> <!-- end of container -->
     <script>
-        $(function () {
-        $("#googleMap").show();
-        $("#destination").hide();
-    });
+        $( document ).ready(function() {
+            showOverview();
+        });
     </script>
 </body>
 
