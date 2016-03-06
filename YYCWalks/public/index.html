@@ -159,7 +159,7 @@
 
             
             $("#destination").show();
-            $("#googleMap").hide();
+            $("#map").hide();
             initializeStreetMap();
         }
 
@@ -255,97 +255,52 @@
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
         </nav>
-        <table style="width:100%; height: 100%;text-align: center">
-            <tr>
-                <td colspan="3">
-                    <div id="googleMap" style="width: 100%; height: 600px;"></div>
-                    <div id="destination" style="width: 100%; height: 600px; overflow: scroll; text-align: left; padding-left: 20px;">
-                        <table width="100%">
-                            <tr>
-                                <td>
-                                    <div id="destinationTitle"></div>
-                                </td>
-                                <td style="max-width: 310px;">
-                                    <div id="googleStreet" style="width: 300px; height: 300px;"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><div id="destinationSummary"></div></td>
-                                <td style="text-align: right"><div id="googleTilt" style="width: 300px; height: 300px;"></div></td>
-                            </tr>
-                        </table>
-                        
-                        
-                        
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <div class="btn-group btn-group-justified" role="group" aria-label="...">
-            <div class="btn-group" role="group" onclick="previousDestination()">
-                <button type="button" class="btn btn-default btn-block">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> PREV
-                </button>
-            </div>
-            <div class="btn-group" role="group" onclick="showDestination()">
-                <button type="button" class="btn btn-default btn-block">
-                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ARRIVED
-                </button>
-            </div>
-            <div class="btn-group" role="group" onclick="nextDestination()">
-                <button type="button" class="btn btn-default btn-block">
-                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> NEXT
-                </button>
-            </div>
-        </div>
-    </div>
 
-        </tr>
-        <tr>
-            <td colspan="3">
+        <div id="body-content">
+            <div id="index">
+                <!-- index stuff here -->
+            </div>
+            <div id="map">
                 <div id="googleMap" style="width: 100%; height: 600px;"></div>
-                <div id="destination" style="width: 100%; height: 600px; overflow: scroll; text-align: left; padding-left: 20px;">
-                    <table width="100%">
-                        <tr>
-                            <td>
-                                <div id="destinationTitle"></div>
-                            </td>
-                            <td style="max-width: 310px;">
-                                <div id="googleStreet" style="width: 300px; height: 300px;"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div id="destinationSummary"></div>
-                                <div id="destinationHeritagVal"></div>
-                            </td>
-                            <td style="text-align: right">
-                                <div id="googleTilt" style="width: 300px; height: 300px;"></div>
-                            </td>
-                        </tr>
-                    </table>
-                    
+                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group" role="group" onclick="previousDestination()">
+                        <button type="button" class="btn btn-default btn-block">
+                            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> PREV
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group" onclick="showDestination()">
+                        <button type="button" class="btn btn-default btn-block">
+                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ARRIVED
+                        </button>
+                    </div>
+                    <div class="btn-group" role="group" onclick="nextDestination()">
+                        <button type="button" class="btn btn-default btn-block">
+                            <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> NEXT
+                        </button>
+                    </div>
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <table style="width: 100%; text-align: center">
+            </div>
+            <div id="destination">
+                <table width="100%">
                     <tr>
-                        <td width="30%" style="text-align: center" onclick="previousDestination()">
-                            <h2>Prev Destination</h2>
+                        <td>
+                            <div id="destinationTitle"></div>
                         </td>
-                        <td width="40%" onclick="showDestination()">
-                            <h2>Arrived at Destination</h2>
-                        </td>
-                        <td width="30%" onclick="nextDestination()">
-                            <h2>Next Destination</h2>
+                        <td style="max-width: 310px;">
+                            <div id="googleStreet" style="width: 300px; height: 300px;"></div>
                         </td>
                     </tr>
+                    <tr>
+                        <td><div id="destinationSummary"></div></td>
+                        <td style="text-align: right"><div id="googleTilt" style="width: 300px; height: 300px;"></div></td>
+                    </tr>
                 </table>
-            </td>
-        </tr>
-    </table>
+            </div>
+            <div id="about">
+                <!-- about stuff here -->
+            </div>
+        </div>
+    </div> <!-- end of container -->
     <script>
         $(function () {
         $("#googleMap").show();
