@@ -30,9 +30,7 @@
         var streetTilt;
         var currentLocation = 0;
         var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer ({
-                                                                            suppressMarkers: true
-                                                                        });
+        var directionsDisplay = new google.maps.DirectionsRenderer ({suppressMarkers: true});
 
         var icons = {
             future: "/images/future_small.png",
@@ -181,8 +179,9 @@
         function showMap() {
            
             $("#destination").hide();
-            $("#googleMap").show();
-             initialize()
+            initialize()
+            $("#map").show();
+
         }
         
         function showDestination() {
@@ -293,7 +292,14 @@
 
         <div id="body-content">
             <div id="index">
-                <!-- index stuff here -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">City Centre Walk</h3>
+                    </div>
+                    <div class="panel-body">
+                        Take a stroll downtown and see amazing sights such as City Hall, Olympic Plaza and Calgary Tower.
+                    </div>
+                </div>
             </div>
             <div id="map">
                 <div id="googleMap" style="width: 100%; height: 600px;"></div>
@@ -316,32 +322,46 @@
                 </div>
             </div>
             <div id="walk-overview">
-                <!-- the walk stuff here -->
+                <div id="googleMap" style="width: 100%; height: 600px;"></div>
+                
             </div>
             <div id="destination">
 
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <div class="panel panel-default">
+                            <div class="panel-body" style="height: 600px; overflow-y: scroll;">
+                                <h2 id="destinationTitle"></h2>
+                                <h3>Summary</h3>
+                                <p id="destinationSummary"></p>
+                                <h3>Heritage Value</h3>
+                                <p id="destinationHeritagVal"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="panel panel-default">
+                            <div id="googleStreet" style="width: 100%; height: 300px;"></div>
+                            <div id="googleTilt" style="width: 100%; height: 300px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
 
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3">
-            <table style="width: 100%; text-align: center">
-                <tr>
-                    <td width="30%" style="text-align: center" onclick="previousDestination()">
-                        <h2>Prev Destination</h2>
-                    </td>
-                    <td width="40%" onclick="showDestination()">
-                        <h2>Arrived at Destination</h2>
-                    </td>
-                    <td width="30%" onclick="nextDestination()">
-                        <h2>Next Destination</h2>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    </table>
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <div id="destinationTitle"></div>
+                        </td>
+                        <td style="max-width: 310px;">
+                            <div id="googleStreet" style="width: 300px; height: 300px;"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div id="destinationSummary"></div></td>
+                        <td style="text-align: right"><div id="googleTilt" style="width: 300px; height: 300px;"></div></td>
+                    </tr>
+                </table>
             </div>
             <div id="about">
                 <!-- about stuff here -->
