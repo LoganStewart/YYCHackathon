@@ -343,6 +343,7 @@
          function showCurrentPath()
         {
             showMap();
+            
             getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
         }
         
