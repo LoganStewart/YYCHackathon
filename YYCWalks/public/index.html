@@ -31,6 +31,7 @@
         var currentLocation = 0;
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer ({suppressMarkers: true});
+        var currentHeading = 160;
 
         var icons = {
             future: "/images/future_small.png",
@@ -45,22 +46,20 @@
 
                 for (var i = 0; i < geoJsonObj.features.length; i++) {
                     var geoItemValue = geoJsonObj.features[i];
-            destinations.push(
-            {
-                        latLng: {
-                            lat: geoItemValue.geometry.coordinates[1], // 51.0460156275713,
-                            lng: geoItemValue.geometry.coordinates[0] //- 114.05788480146
-            }, 
-                        ID: geoItemValue.properties.name, //"kml_276",
-                        geoItem: geoItemValue,
-                marker: null
+                    destinations.push(
+                    {
+                                latLng: {
+                                    lat: geoItemValue.geometry.coordinates[1], // 51.0460156275713,
+                                    lng: geoItemValue.geometry.coordinates[0] //- 114.05788480146
+                    }, 
+                                ID: geoItemValue.properties.name, //"kml_276",
+                                geoItem: geoItemValue,
+                        marker: null
 
-            });
-        }
+                    });
+                }
             }
         }
-
-        //getDestinations();
         
         function getDirections(destArray) {
             var waypts = [];
@@ -111,7 +110,7 @@
             document.getElementById('googleStreet'),
             {
               position: {lat: myLatLng.lat, lng: myLatLng.lng},
-              pov: {heading: 160, pitch: 0},
+              pov: {heading: currentHeading, pitch: 0},
               zoom: 1
             });
             
@@ -193,8 +192,6 @@
             $("#body-content").children().hide();
             $("#map").show();
            
-            // $("#destination").hide();
-            // $("#map").show();
             initialize();
         }
         
@@ -276,18 +273,21 @@
             navigator.geolocation.getCurrentPosition(function(position) {  
                 var newPoint = new google.maps.LatLng(position.coords.latitude, 
                                                     position.coords.longitude);
-
+                if(position.coords.heading){
+                    currentHeading = position.coords.heading;
+                }
+                
                 if (marker) {
-                // Marker already created - Move it
-                marker.setPosition(newPoint);
+                    // Marker already created - Move it
+                    marker.setPosition(newPoint);
                 }
                 else {
-                // Marker does not exist - Create it
-                marker = new google.maps.Marker({
-                    position: newPoint,
-                    map: map,
-                    icon: "/images/person-icon-red60.png"
-                });
+                    // Marker does not exist - Create it
+                    marker = new google.maps.Marker({
+                        position: newPoint,
+                        map: map,
+                        icon: "/images/person-icon-red60.png"
+                    });
                 }
 
                 var p2 = {
@@ -304,7 +304,7 @@
                 }
                 
                 // Center the map on the new position
-                map.setCenter(newPoint);
+                //map.setCenter(newPoint);
             }); 
 
             // Call the autoUpdate() function every 5 seconds
@@ -328,7 +328,6 @@
             var d = R * c;
             return d; // returns the distance in meter
         };
-        
     </script>
 
     <title>YYC Walks</title>
@@ -418,7 +417,7 @@
                     <h4>What you will see</h4>
                     <p id="overviewLocations"></p>
                     <button type="button" class="btn btn-default btn-block">
-                            <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> START
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> START
                     </button>
                 </div>
             </div>
