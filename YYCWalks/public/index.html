@@ -114,7 +114,7 @@
                             );
                         }
                         totalDistance = getTotalDistance(streetDestArray);
-                        $("#overviewDistance").text(totalDistance);
+                        $("#overviewDistance").text(totalDistance + " m");
                     }
                     display.setDirections(response);
                 } else {
@@ -125,7 +125,7 @@
       
         function getTotalDistance(destArray){
             var totalDistance = 0;
-            for (var i = 0; i < destArray.length - 1; i++) {
+            for (var i = 0; i < destArray.length; i++) {
                 totalDistance = totalDistance + destArray[i].distance;
             }
             return totalDistance;
