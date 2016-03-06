@@ -196,6 +196,9 @@
                 
                 destinations[i].marker = marker;
             }
+            
+            autoUpdate();
+            
             updateMarkers();
             getDirections(_.slice(destinations,currentLocation, currentLocation+2), directionsService, directionsDisplay);
         }
@@ -312,6 +315,7 @@
                 if (marker) {
                     // Marker already created - Move it
                     marker.setPosition(newPoint);
+                    marker.setMap(map);
                 }
                 else {
                     // Marker does not exist - Create it
@@ -329,10 +333,8 @@
                     if(getDistance(newPoint,p2) < 75 && !userNotifiedOfProximity)
                     {
                         userNotifiedOfProximity = true;
-                        var result = window.confirm("You are close to your destination, would you like to see the details?"); 
-                        if(result){
-                            showDestination();
-                        }
+                       
+                        $('#myModal').modal('show');
                     }
                 }
                 // Center the map on the new position
@@ -342,7 +344,7 @@
             // Call the autoUpdate() function every 5 seconds
             setTimeout(autoUpdate, 5000);
         }
-        autoUpdate();
+        //autoUpdate();
 
 
         var rad = function (x) {
@@ -487,6 +489,25 @@
             showIndex();
         });
     </script>
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Arrived at Destination</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You arrived at the Historic Site, would you like to view the details?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="showDestination()" data-dismiss="modal">Yes, show me the information.</button> <button type="button" class="btn btn-default" data-dismiss="modal">No, thanks.</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
 
 </html>
