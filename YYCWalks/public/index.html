@@ -90,7 +90,6 @@
                 optimizeWaypoints: true
             }, function (response, status) {
                 if (status === google.maps.DirectionsStatus.OK) {
-                    display.setDirections(response);
                     if (streetDestArray){
                         var legs = response.routes[0].legs;
                             streetDestArray.push(
@@ -109,12 +108,16 @@
                                         lat: legs[i].end_location.lat(), // 51.0460156275713,
                                         lng: legs[i].end_location.lng() //- 114.05788480146
                                     },
-                                    distance: legs[i].distance
+                                    distance: legs[i].distance.value;
                                 }
+                                
                             );
-
                         }
+                        debugger;
+                        totalDistance = getTotalDistance(streetDestArray);
+                        $("#overviewDistance").text(totalDistance);
                     }
+                    display.setDirections(response);
                 } else {
                     window.alert('Directions request failed due to ' + status);
                 }
@@ -123,8 +126,8 @@
       
         function getTotalDistance(destArray){
             var totalDistance = 0;
-            for (var i; i < destArray.length - 1; i++) {
-                totalDistance = totalDistance + destArray[i].distance.value;
+            for (var i = 0; i < destArray.length - 1; i++) {
+                totalDistance = totalDistance + destArray[i].distance;
             }
             return totalDistance;
         }
@@ -145,8 +148,7 @@
             overviewDirectionsDisplay.setMap(mapOverview);
 
             getDirections(destinations, overviewDirectionsService, overviewDirectionsDisplay, streetDestinations);
-            totalDistance = getTotalDistance(streetDestinations);
-            $("#overviewDistance").text(totalDistance);
+            
         }
         
         function initializeMainMap() {
