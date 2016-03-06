@@ -25,6 +25,7 @@
         });
 
         var destinations = [];
+        var streetDestinations = [];
         var map;
         var mapOverview;
         var streetMap;
@@ -69,7 +70,7 @@
             
         }
         
-        function getDirections(destArray, service, display) {
+        function getDirections(destArray, service, display, streetDestArray) {
             var waypts = [];
             
             if(destArray.length > 2) {
@@ -90,14 +91,47 @@
             }, function (response, status) {
                 if (status === google.maps.DirectionsStatus.OK) {
                     display.setDirections(response);
+                    if (streetDestArray){
+                        var legs = response.routes[0].legs;
+                            streetDestArray.push(
+                                {
+                                    latLng: {
+                                        lat: legs[0].start_location.lat(), // 51.0460156275713,
+                                        lng: legs[0].start_location.lng() //- 114.05788480146
+                                    },
+                                    distance: 0
+                                }
+                            );
+                        for (var i = 0; i < legs.length; i++) {
+                            streetDestArray.push(
+                                {
+                                    latLng: {
+                                        lat: legs[i].end_location.lat(), // 51.0460156275713,
+                                        lng: legs[i].end_location.lng() //- 114.05788480146
+                                    },
+                                    distance: legs[i].distance
+                                }
+                            );
+
+                        }
+                    }
                 } else {
                     window.alert('Directions request failed due to ' + status);
                 }
             });
         }
       
+        function getTotalDistance(destArray){
+            var totalDistance = 0;
+            for (var i; i < destArray.length - 1; i++) {
+                totalDistance = totalDistance + destArray[i].distance.value;
+            }
+            return totalDistance;
+        }
+      
         function initializeOverview(){
            var myLatLng = { lat: 51.0460156275713, lng: -114.05788480146 };
+           var totalDistance = 0;
            var mapProp = {
                 center: new google.maps.LatLng(myLatLng.lat, myLatLng.lng),
                 zoom: 15,
@@ -110,8 +144,9 @@
             
             overviewDirectionsDisplay.setMap(mapOverview);
 
-            getDirections(destinations, overviewDirectionsService, overviewDirectionsDisplay);
-            
+            getDirections(destinations, overviewDirectionsService, overviewDirectionsDisplay, streetDestinations);
+            totalDistance = getTotalDistance(streetDestinations);
+            $("#overviewDistance").text(totalDistance);
         }
         
         function initializeMainMap() {
@@ -199,7 +234,7 @@
             autoUpdate();
             
             updateMarkers();
-            getDirections(_.slice(destinations,currentLocation, currentLocation+2), directionsService, directionsDisplay);
+            getDirections(_.slice(destinations,currentLocation, currentLocation+2), directionsService, directionsDisplay, null);
         }
 
         function showIndex() {
@@ -251,7 +286,7 @@
         function nextDestination(){
             if(currentLocation < destinations.length - 1){
                 currentLocation++;
-                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay);
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
                 userNotifiedOfProximity=false;
             }
 
@@ -262,7 +297,7 @@
         function previousDestination(){
             if(currentLocation > 0){
                 currentLocation--;
-                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay);
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
                 userNotifiedOfProximity=false;
                 
             }
@@ -292,13 +327,13 @@
         function showFullPath()
         {
             showMap();
-            getDirections(destinations, directionsService, directionsDisplay);;
+            getDirections(destinations, directionsService, directionsDisplay, null);;
         }
         
          function showCurrentPath()
         {
             showMap();
-            getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay);
+            getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
         }
         
         var marker = null;
