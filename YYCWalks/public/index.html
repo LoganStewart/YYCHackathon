@@ -176,11 +176,16 @@
             getDirections(destinations);
         }
 
+        function showOverview(){
+            initializeOverview();
+            
+        }
+
         function showMap() {
            
             $("#destination").hide();
-            initialize()
             $("#map").show();
+            initialize();
 
         }
         
@@ -292,7 +297,7 @@
 
         <div id="body-content">
             <div id="index">
-                <div class="panel panel-default">
+                <div class="panel panel-default" onclick="showOverview()">
                     <div class="panel-heading">
                         <h3 class="panel-title">City Centre Walk</h3>
                     </div>
