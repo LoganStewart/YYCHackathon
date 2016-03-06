@@ -25,6 +25,7 @@
         });
 
         var destinations = [];
+        var streetDestinations = [];
         var map;
         var mapOverview;
         var streetMap;
@@ -69,7 +70,7 @@
             
         }
         
-        function getDirections(destArray, service, display) {
+        function getDirections(destArray, service, display, streetDestArray) {
             var waypts = [];
             
             if(destArray.length > 2) {
@@ -89,6 +90,32 @@
                 optimizeWaypoints: true
             }, function (response, status) {
                 if (status === google.maps.DirectionsStatus.OK) {
+                    if (streetDestArray){
+                        var legs = response.routes[0].legs;
+                            streetDestArray.push(
+                                {
+                                    latLng: {
+                                        lat: legs[0].start_location.lat(), // 51.0460156275713,
+                                        lng: legs[0].start_location.lng() //- 114.05788480146
+                                    },
+                                    distance: 0
+                                }
+                            );
+                        for (var i = 0; i < legs.length; i++) {
+                            streetDestArray.push(
+                                {
+                                    latLng: {
+                                        lat: legs[i].end_location.lat(), // 51.0460156275713,
+                                        lng: legs[i].end_location.lng() //- 114.05788480146
+                                    },
+                                    distance: legs[i].distance.value
+                                }
+                                
+                            );
+                        }
+                        totalDistance = getTotalDistance(streetDestArray);
+                        $("#overviewDistance").text(totalDistance);
+                    }
                     display.setDirections(response);
                 } else {
                     window.alert('Directions request failed due to ' + status);
@@ -96,8 +123,17 @@
             });
         }
       
+        function getTotalDistance(destArray){
+            var totalDistance = 0;
+            for (var i = 0; i < destArray.length - 1; i++) {
+                totalDistance = totalDistance + destArray[i].distance;
+            }
+            return totalDistance;
+        }
+      
         function initializeOverview(){
            var myLatLng = { lat: 51.0460156275713, lng: -114.05788480146 };
+           var totalDistance = 0;
            var mapProp = {
                 center: new google.maps.LatLng(myLatLng.lat, myLatLng.lng),
                 zoom: 15,
@@ -110,7 +146,7 @@
             
             overviewDirectionsDisplay.setMap(mapOverview);
 
-            getDirections(destinations, overviewDirectionsService, overviewDirectionsDisplay);
+            getDirections(destinations, overviewDirectionsService, overviewDirectionsDisplay, streetDestinations);
             
         }
         
@@ -199,7 +235,7 @@
             autoUpdate();
             
             updateMarkers();
-            getDirections(_.slice(destinations,currentLocation, currentLocation+2), directionsService, directionsDisplay);
+            getDirections(_.slice(destinations,currentLocation, currentLocation+2), directionsService, directionsDisplay, null);
         }
 
         function showIndex() {
@@ -251,7 +287,7 @@
         function nextDestination(){
             if(currentLocation < destinations.length - 1){
                 currentLocation++;
-                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay);
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
                 userNotifiedOfProximity=false;
             }
 
@@ -262,7 +298,7 @@
         function previousDestination(){
             if(currentLocation > 0){
                 currentLocation--;
-                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay);
+                getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
                 userNotifiedOfProximity=false;
                 
             }
@@ -292,13 +328,13 @@
         function showFullPath()
         {
             showMap();
-            getDirections(destinations, directionsService, directionsDisplay);;
+            getDirections(destinations, directionsService, directionsDisplay, null);;
         }
         
          function showCurrentPath()
         {
             showMap();
-            getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay);
+            getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
         }
         
         var marker = null;
@@ -410,7 +446,7 @@
                             <div class="panel-heading">
                                 <h2 class="panel-title" style=" font-weight: bolder;">City Centre Walk</h2>
                             </div>
-                            <div class="panel-body" style="background: url('/images/city.png'); height: 300px;font-size: x-large; font-weight: bolder;">
+                            <div class="panel-body" style="background: url('/images/city.PNG'); height: 450px;font-size: x-large; font-weight: bolder;">
                                 Take a stroll downtown and see amazing sights such as City Hall, Olympic Plaza and Calgary Tower.
                             </div>
                         </div>
@@ -422,7 +458,7 @@
                 </div>
             </div>
             <div id="map">
-                <div id="googleMap" style="width: 100%; height: 600px;"></div>
+                <div id="googleMap" style="width: 100%; height: 80vh;"></div>
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
                     <div class="btn-group" role="group" onclick="previousDestination()">
                         <button type="button" class="btn btn-default btn-block">
@@ -445,14 +481,14 @@
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-8">
                         <div class="panel panel-default">
-                            <div class="panel-body" style="height: 600px; overflow-y:">
-                                <div id="overviewMap" style="width: 100%; height: 100%;"></div>
+                            <div class="panel-body" style="height: 80vh; overflow-y:">
+                                <div id="overviewMap" style="width: 100%; height: 80vh;"></div>
                             </div>
                          </div>
                      </div>
                      <div class="col-lg-4 col-md-4 col-sm-4">
                          <div class="panel panel-default">
-                             <div id="overviewInfo" style="width: 100%; height: 600px;">
+                             <div id="overviewInfo" style="width: 100%; height: 80vh;">
                                 <h3>City Centre Walk</h3>
                                 <p id="overviewDescription">
                                     Take a stroll downtown and see amazing sights such as City Hall, Olympic Plaza and Calgary Tower. This walk begins at City Hall - press "Start" when you are ready to go.
@@ -473,7 +509,7 @@
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-8">
                         <div class="panel panel-default">
-                            <div class="panel-body" style="height: 600px; overflow-y: scroll;">
+                            <div class="panel-body" style="height: 80vh; overflow-y: scroll;">
                                 <h2 id="destinationTitle"></h2>
                                 <h3 id="destinationAltTitle"></h3>
                                 <h3 id="destinationDevelopmentEra"></h3>
