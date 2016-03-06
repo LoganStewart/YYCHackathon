@@ -495,28 +495,31 @@
                 </center>
             </div>
             <div id="map">
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div class="panel panel-success" style="height: 80vh;">
+                    <div class="panel-heading">
                         <div id="nextDestinationName"></div>
                     </div>
-                </div>
-
-                <div id="googleMap" style="width: 100%; height: 80vh;"></div>
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <div class="btn-group" role="group" onclick="previousDestination()">
-                        <button type="button" class="btn btn-default btn-block">
-                            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> PREV
-                        </button>
+                    <div class="panel-body">
+                        <div id="googleMap" style="width: 100%; height: 70vh;"></div>
                     </div>
-                    <div class="btn-group" role="group" onclick="showDestination()">
-                        <button type="button" class="btn btn-default btn-block">
-                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ARRIVED
-                        </button>
-                    </div>
-                    <div class="btn-group" role="group" onclick="nextDestination()">
-                        <button type="button" class="btn btn-default btn-block">
-                            <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> NEXT
-                        </button>
+                    <div class="panel-footer">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                            <div class="btn-group" role="group" onclick="previousDestination()">
+                                <button type="button" class="btn btn-default btn-block">
+                                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> PREV
+                                </button>
+                            </div>
+                            <div class="btn-group" role="group" onclick="showDestination()">
+                                <button type="button" class="btn btn-default btn-block">
+                                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ARRIVED
+                                </button>
+                            </div>
+                            <div class="btn-group" role="group" onclick="nextDestination()">
+                                <button type="button" class="btn btn-default btn-block">
+                                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> NEXT
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
