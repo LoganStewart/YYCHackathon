@@ -191,7 +191,7 @@
                 destinations[i].marker = marker;
             }
             updateMarkers();
-            getDirections(destinations);
+            getDirections(_.slice(destinations,currentLocation-1, currentLocation+1));
         }
 
         function showIndex() {
