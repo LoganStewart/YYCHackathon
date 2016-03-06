@@ -172,7 +172,6 @@
                     position: item.latLng,
                     map: map,
                     label: i.toString(),
-                    title: item.title,
                     icon: icon
                 });
                 
@@ -201,7 +200,13 @@
 
         function showOverview(){
             // initializeOverview();
+            var overviewLocationsValues = "<ol type='1'>"
+            _(destinations).forEach(function(destination) {
+                overviewLocationsValues += "<li>" + destination.geoItem.properties.RESOURCE_NM +"</li>"
+            });
+            overviewLocationsValues += "</ol>";
             
+            $("#overviewLocations").html(overviewLocationsValues);
             $("#body-content").children().hide();
             $("#walk-overview").show();
             initialize();
