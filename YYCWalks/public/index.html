@@ -35,12 +35,7 @@
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer ({suppressMarkers: true});
         var currentHeading = 160;
-        
-        var lineSymbol = {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillOpacity: 1,
-            scale: 3
-        };
+
 
         var icons = {
             future: "/images/future_small.png",
@@ -81,7 +76,7 @@
                     });
                 }
             }
-            
+
             service.route({
                 origin: destArray[0].latLng,
                 destination: destArray[destArray.length - 1].latLng,
@@ -99,15 +94,19 @@
       
         function initializeOverview(){
            var myLatLng = { lat: 51.0460156275713, lng: -114.05788480146 };
-
-            var mapProp = {
+           var mapProp = {
                 center: new google.maps.LatLng(myLatLng.lat, myLatLng.lng),
                 zoom: 15,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             mapOverview = new google.maps.Map(document.getElementById("overviewMap"), mapProp);
-            directionsDisplay.setMap(mapOverview);
+            
+            overviewDirectionsService = new google.maps.DirectionsService;
+            overviewDirectionsDisplay = new google.maps.DirectionsRenderer();
+            
+            overviewDirectionsDisplay.setMap(mapOverview);
 
+            getDirections(destinations, overviewDirectionsService, overviewDirectionsDisplay);
             
         }
         
