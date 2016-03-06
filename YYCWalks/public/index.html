@@ -205,8 +205,8 @@
             $("#destinationTitle").text(destinations[currentLocation].geoItem.properties.RESOURCE_NM);
             $("#destinationSummary").text(destinations[currentLocation].geoItem.properties.SIGNIFICANCE_STMT_DSCRN);
             $("#destinationHeritagVal").text(destinations[currentLocation].geoItem.properties.SIGNIFICANCE_STMT_HRTG_VAL);
-            $("#destinationDevelopmentEra").text( destinations[currentLocation].geoItem.properties.DEVELOPMENT_ERA);
-            $("#destinationAltTitle").text(destinations[currentLocation].geoItem.properties.RESOURCE_ALTERNATE_NM);
+            $("#destinationDevelopmentEra").html( "Historic Era: <i>" + destinations[currentLocation].geoItem.properties.DEVELOPMENT_ERA+ "</i>");
+            $("#destinationAltTitle").html("Alternative Name: <i>" + destinations[currentLocation].geoItem.properties.RESOURCE_ALTERNATE_NM + "</i>");
         }
         
         function nextDestination(){
@@ -337,6 +337,8 @@
                         <div class="panel panel-default">
                             <div class="panel-body" style="height: 600px; overflow-y: scroll;">
                                 <h2 id="destinationTitle"></h2>
+                                <h3 id="destinationAltTitle"></h3>
+                                <h3 id="destinationDevelopmentEra"></h3>
                                 <h3>Summary</h3>
                                 <p id="destinationSummary"></p>
                                 <h3>Heritage Value</h3>
