@@ -239,6 +239,7 @@
             autoUpdate();
             
             updateMarkers();
+            setDestinationTitle()
             getDirections(_.slice(destinations,currentLocation, currentLocation+2), directionsService, directionsDisplay, null);
         }
 
@@ -299,7 +300,7 @@
                 getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
                 userNotifiedOfProximity=false;
             }
-
+            setDestinationTitle()
             updateMarkers();
             updateDestinationPanel();
         }
@@ -312,6 +313,7 @@
                 
             }
             
+            setDestinationTitle()
             updateMarkers();
             updateDestinationPanel();
         }
@@ -319,6 +321,10 @@
         function proceedNext() {
             showMap();
             nextDestination();
+        }
+        
+        function setDestinationTitle(){
+            $("#nextDestinationName").html("<center>Next Destination: <strong>"+destinations[currentLocation].geoItem.properties.RESOURCE_NM + "</strong></center>");
         }
         
         function updateMarkers()
@@ -348,6 +354,7 @@
          function showCurrentPath()
         {
             showMap();
+            
             getDirections(_.slice(destinations,currentLocation-1, currentLocation+1), directionsService, directionsDisplay, null);
         }
         
@@ -464,9 +471,8 @@
 
         <div id="body-content">
             <div id="index">
-               
+
                 <div class="list-group">
-                   
                     <a href="#" class="list-group-item" onclick="showOverview()">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -484,10 +490,17 @@
                 </div>
                 <center>
                     Data Provided By:
-                <a href="http://calgaryregion.ca/crp/calgary-regional-partnership.html" target="_blank"><img src="images/logo-interior.jpg"></img></a>
+                    <a href="http://calgaryregion.ca/crp/calgary-regional-partnership.html" target="_blank"> <img src="images/logo-interior.jpg"></img>
+                    </a>
                 </center>
             </div>
             <div id="map">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="nextDestinationName"></div>
+                    </div>
+                </div>
+
                 <div id="googleMap" style="width: 100%; height: 80vh;"></div>
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
                     <div class="btn-group" role="group" onclick="previousDestination()">
@@ -515,7 +528,8 @@
                                 <div class="panel-body">
                                     <h3>City Centre Walk</h3>
                                     <p id="overviewDescription">
-                                        Take a stroll downtown and see amazing sights such as City Hall, Olympic Plaza and Calgary Tower. This walk begins at City Hall - press "Start" when you are ready to go.
+                                        Take a stroll downtown and see amazing sights such as City Hall, Olympic Plaza and Calgary Tower. This walk begins at City
+                                        Hall - press "Start" when you are ready to go.
                                     </p>
                                     <h4>Total Distance</h4>
                                     <p id="overviewDistance"></p>
@@ -598,7 +612,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
     <!-- end of container -->
     <script>
@@ -619,7 +633,8 @@
                     <p>You arrived at the Historic Site, would you like to view the details?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" onclick="showDestination()" data-dismiss="modal">Yes, show me the information.</button> <button type="button" class="btn btn-default" data-dismiss="modal">No, thanks.</button>
+                    <button type="button" class="btn btn-default" onclick="showDestination()" data-dismiss="modal">Yes, show me the information.</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No, thanks.</button>
                 </div>
             </div>
 
