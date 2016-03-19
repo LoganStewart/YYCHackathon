@@ -25,7 +25,7 @@ namespace YYCWalks
                 ServeUnknownFileTypes = true,
                 DefaultContentType = "application/vnd.google-earth.kml+xml"
             });
-            app.UseDefaultFiles(new DefaultFilesOptions() { DefaultFileNames = new[] { "index.html", "test.kml" } });
+            app.UseDefaultFiles();
             
 
 
